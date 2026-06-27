@@ -1,7 +1,20 @@
 # Base Sentinel
 
 ## Overview
-A **rare, security-focused** GitHub repository that provides **risk-intelligence** and **pre-exploit defense** tooling for the Base Layer 2 ecosystem. Unlike typical open-source projects that offer generic SDKs or token templates, Base Sentinel concentrates on:
+A **rare, security-focused** GitHub repository that provides **risk-intelligence** and **pre-exploit defense** tooling for the Base Layer 2 ecosystem.
+
+## On-Chain Proof (Deployed & Verified)
+
+### Base Sepolia (OP Stack)
+
+| Contract | Address | Tx Hash |
+|----------|---------|---------|
+| **BridgeValidator** | [`0x7a44b742D054529cC1a9A745Cb5d623277982f55`](https://sepolia.basescan.org/address/0x7a44b742D054529cC1a9A745Cb5d623277982f55) | [`0x4cf0c41...aafe234`](https://sepolia.basescan.org/tx/0x4cf0c41ab2bf9d334bb2afcc6c678766d8f46d9a86811c0350e64ecc2aafe234) |
+| **SequencerWatchdog** | [`0xB14dE6BaCFc77d5F2A8b2423d71E0438852d5c5e`](https://sepolia.basescan.org/address/0xB14dE6BaCFc77d5F2A8b2423d71E0438852d5c5e) | [`0x9b974ac...c6dbb9`](https://sepolia.basescan.org/tx/0x9b974ac1d0ceeafc3a1ecc922907c2d12b5e11ac8d92246fd625c6a6cfc6dbb9) |
+
+**Deployer**: [`0x7F75bfAfeD5c96584774c7F2Bc33F3bF887BC739`](https://sepolia.basescan.org/address/0x7F75bfAfeD5c96584774c7F2Bc33F3bF887BC739)
+
+Unlike typical open-source projects that offer generic SDKs or token templates, Base Sentinel concentrates on:
 
 - Monitoring critical components (bridges, sequencer, oracles, lending contracts, account-abstraction modules) for emerging threats.
 - Publishing **Solidity proof-of-concepts** that demonstrate potential attack vectors before they are exploited.

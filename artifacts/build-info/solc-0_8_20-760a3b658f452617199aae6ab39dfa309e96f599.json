@@ -1,0 +1,51 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_20-760a3b658f452617199aae6ab39dfa309e96f599",
+  "solcVersion": "0.8.20",
+  "solcLongVersion": "0.8.20+commit.a1b79de6",
+  "compilerType": "solc",
+  "userSourceNameMap": {
+    "contracts/BridgeValidator.sol": "project/contracts/BridgeValidator.sol",
+    "contracts/SequencerWatchdog.sol": "project/contracts/SequencerWatchdog.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "shanghai",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode.linkReferences",
+            "evm.bytecode.object",
+            "evm.bytecode.opcodes",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.immutableReferences",
+            "evm.deployedBytecode.linkReferences",
+            "evm.deployedBytecode.object",
+            "evm.deployedBytecode.opcodes",
+            "evm.deployedBytecode.sourceMap",
+            "evm.methodIdentifiers"
+          ]
+        }
+      },
+      "remappings": [],
+      "viaIR": true
+    },
+    "sources": {
+      "project/contracts/BridgeValidator.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\n/**\n * @title BridgeValidator\n * @notice Detects suspicious bridge activity and prevents exploits\n * @author Base Sentinel\n * @dev Proof-of-concept for cross-chain exploit detection\n */\ncontract BridgeValidator {\n    // Events\n    event SuspiciousTransfer(address indexed user, uint256 amount, uint256 timestamp);\n    event LargeTransferBlocked(address indexed user, uint256 amount, uint256 timestamp);\n    event PatternDetected(bytes32 patternHash, uint256 timestamp);\n    event EmergencyPause(string reason);\n\n    // State variables\n    mapping(address => uint256) public userTransferCount;\n    mapping(address => uint256) public lastTransferTime;\n    mapping(bytes32 => bool) public knownAttackPatterns;\n    \n    uint256 public  LARGE_TRANSFER_THRESHOLD = 1000 * 1e18; // 1000 tokens\n    uint256 public  RUSH_THRESHOLD = 10; // 10 transfers in 5 minutes\n    uint256 public  TIME_WINDOW = 300; // 5 minutes\n    \n    bool public emergencyPause;\n    address public owner;\n    \n    // Constructor\n    constructor() {\n        owner = msg.sender;\n        // Initialize known attack patterns\n        _initializeAttackPatterns();\n    }\n    \n    // Main validation function\n    function validateTransfer(address user, uint256 amount, bytes32 transferHash) external returns (bool isValid) {\n        require(!emergencyPause, \"Emergency pause active\");\n        \n        uint256 currentTime = block.timestamp;\n        uint256 userCount = userTransferCount[user];\n        \n        // Check for large transfers\n        if (amount > LARGE_TRANSFER_THRESHOLD) {\n            if (userCount > 0 && (currentTime - lastTransferTime[user]) < TIME_WINDOW) {\n                emit LargeTransferBlocked(user, amount, currentTime);\n                return false;\n            }\n        }\n        \n        // Check for transfer rush\n        if (userCount >= RUSH_THRESHOLD) {\n            emit SuspiciousTransfer(user, amount, currentTime);\n            return false;\n        }\n        \n        // Check for known attack patterns\n        if (knownAttackPatterns[transferHash]) {\n            emit PatternDetected(transferHash, currentTime);\n            return false;\n        }\n        \n        // Update user state\n        userTransferCount[user]++;\n        lastTransferTime[user] = currentTime;\n        \n        return true;\n    }\n    \n    // Owner functions\n    function addAttackPattern(bytes32 patternHash) external {\n        require(msg.sender == owner, \"Only owner\");\n        knownAttackPatterns[patternHash] = true;\n    }\n    \n    function removeAttackPattern(bytes32 patternHash) external {\n        require(msg.sender == owner, \"Only owner\");\n        knownAttackPatterns[patternHash] = false;\n    }\n    \n    function setLargeTransferThreshold(uint256 threshold) external {\n        require(msg.sender == owner, \"Only owner\");\n        LARGE_TRANSFER_THRESHOLD = threshold;\n    }\n    \n    function setRushThreshold(uint256 threshold) external {\n        require(msg.sender == owner, \"Only owner\");\n        RUSH_THRESHOLD = threshold;\n    }\n    \n    function emergencyPauseTransfer(string memory reason) external {\n        require(msg.sender == owner, \"Only owner\");\n        emergencyPause = true;\n        emit EmergencyPause(reason);\n    }\n    \n    function emergencyResume() external {\n        require(msg.sender == owner, \"Only owner\");\n        emergencyPause = false;\n    }\n    \n    // Reset user counters\n    function resetUserCounter(address user) external {\n        require(msg.sender == owner, \"Only owner\");\n        userTransferCount[user] = 0;\n        lastTransferTime[user] = 0;\n    }\n    \n    // View functions\n    function getUserTransferCount(address user) external view returns (uint256) {\n        return userTransferCount[user];\n    }\n    \n    function isInRushMode(address user) external view returns (bool) {\n        return (userTransferCount[user] >= RUSH_THRESHOLD && \n                (block.timestamp - lastTransferTime[user]) < TIME_WINDOW);\n    }\n    \n    // Internal functions\n    function _initializeAttackPatterns() internal {\n        // Example: Known re-entrancy pattern hash\n        bytes32 reentrancyPattern = keccak256(abi.encodePacked(\"REENTRANCY_CALL\"));\n        knownAttackPatterns[reentrancyPattern] = true;\n        \n        // Example: Batch transfer overflow pattern\n        bytes32 overflowPattern = keccak256(abi.encodePacked(\"BATCH_OVERFLOW\"));\n        knownAttackPatterns[overflowPattern] = true;\n    }\n}\n"
+      },
+      "project/contracts/SequencerWatchdog.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\n/**\n * @title SequencerWatchdog\n * @notice Monitors Base sequencer liveness and provides early warnings\n * @author Base Sentinel\n * @dev This contract is a proof-of-concept for detecting sequencer downtime\n */\ncontract SequencerWatchdog {\n    // Events\n    event SequencerWarning(uint256 timestamp, uint256 blocksSinceLast);\n    event SequencerRecovered(uint256 timestamp);\n    event EmergencyFreezeTriggered(uint256 timestamp, string reason);\n\n    // State variables\n    uint256 public lastSequencerBlock;\n    uint256 public  WARNING_THRESHOLD = 300; // 5 minutes in blocks\n    uint256 public  CRITICAL_THRESHOLD = 600; // 10 minutes in blocks\n    bool public emergencyFreeze;\n    address public owner;\n\n    // Constructor\n    constructor() {\n        owner = msg.sender;\n        lastSequencerBlock = block.timestamp;\n    }\n\n    // External functions\n    function checkSequencer() external returns (bool isHealthy) {\n        uint256 timeSinceLast = block.timestamp - lastSequencerBlock;\n        \n        if (timeSinceLast > CRITICAL_THRESHOLD) {\n            if (!emergencyFreeze) {\n                emergencyFreeze = true;\n                emit EmergencyFreezeTriggered(block.timestamp, \"Sequencer critical threshold exceeded\");\n            }\n            return false;\n        }\n        \n        if (timeSinceLast > WARNING_THRESHOLD) {\n            emit SequencerWarning(block.timestamp, timeSinceLast);\n            return false;\n        }\n        \n        emit SequencerRecovered(block.timestamp);\n        return true;\n    }\n\n    // Fallback function to update sequencer block time\n    receive() external payable {\n        // Only update if not in emergency freeze\n        if (!emergencyFreeze) {\n            lastSequencerBlock = block.timestamp;\n        }\n    }\n\n    // Owner functions\n    function updateLastBlock() external {\n        require(msg.sender == owner, \"Only owner\");\n        lastSequencerBlock = block.timestamp;\n        emergencyFreeze = false;\n    }\n\n    function setThresholds(uint256 warning, uint256 critical) external {\n        require(msg.sender == owner, \"Only owner\");\n        require(warning < critical, \"Warning must be less than critical\");\n        WARNING_THRESHOLD = warning;\n        CRITICAL_THRESHOLD = critical;\n    }\n\n    function unfreeze() external {\n        require(msg.sender == owner, \"Only owner\");\n        emergencyFreeze = false;\n        lastSequencerBlock = block.timestamp;\n    }\n\n    // View functions\n    function getTimeSinceLastBlock() external view returns (uint256) {\n        return block.timestamp - lastSequencerBlock;\n    }\n\n    function isSequencerHealthy() external view returns (bool) {\n        return (block.timestamp - lastSequencerBlock) <= WARNING_THRESHOLD;\n    }\n}\n"
+      }
+    }
+  }
+}

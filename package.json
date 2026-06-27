@@ -1,33 +1,10 @@
 {
   "name": "base-sentinel",
   "version": "1.0.0",
-  "description": "Base Layer 2 Risk Intelligence & Pre-Exploit Defense Framework",
-  "main": "index.js",
-  "scripts": {
-    "test": "forge test",
-    "test:gas": "forge test --gas-report",
-    "test:coverage": "forge coverage",
-    "lint": "solhint src/**/*.sol",
-    "format": "forge fmt",
-    "build": "forge build"
-  },
-  "keywords": [
-    "base",
-    "layer2",
-    "security",
-    "defi",
-    "smart-contracts",
-    "risk-intelligence",
-    "pre-exploit"
-  ],
-  "author": "Base Sentinel",
-  "license": "MIT",
+  "type": "module",
   "devDependencies": {
-    "@openzeppelin/contracts": "^4.9.0",
-    "forge-std": "^1.8.0",
-    "solhint": "^3.3.0"
-  },
-  "dependencies": {
-    "@openzeppelin/contracts": "^4.9.0"
+    "hardhat": "^3.0.0",
+    "@nomicfoundation/hardhat-ethers": "^4.0.0",
+    "ethers": "^6.15.0"
   }
 }

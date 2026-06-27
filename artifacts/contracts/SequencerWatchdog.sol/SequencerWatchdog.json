@@ -1,0 +1,210 @@
+{
+  "_format": "hh3-artifact-1",
+  "contractName": "SequencerWatchdog",
+  "sourceName": "contracts/SequencerWatchdog.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "string",
+          "name": "reason",
+          "type": "string"
+        }
+      ],
+      "name": "EmergencyFreezeTriggered",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "SequencerRecovered",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "blocksSinceLast",
+          "type": "uint256"
+        }
+      ],
+      "name": "SequencerWarning",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "CRITICAL_THRESHOLD",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "WARNING_THRESHOLD",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "checkSequencer",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "isHealthy",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "emergencyFreeze",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getTimeSinceLastBlock",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "isSequencerHealthy",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "lastSequencerBlock",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "owner",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "warning",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "critical",
+          "type": "uint256"
+        }
+      ],
+      "name": "setThresholds",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "unfreeze",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "updateLastBlock",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    }
+  ],
+  "bytecode": "0x608080604052346100455761012c60015561025860025560038054610100600160a81b0319163360081b610100600160a81b0316179055425f55610475908161004a8239f35b5f80fdfe604060808152600436101561002c575b50361561001a575f80fd5b60ff600354161561002757005b425f55005b5f90813560e01c806303899d06146102af57806355d04aa81461027657806356e00f6b1461024c5780636a28f000146102105780636b27eea1146101f45780637f14c6d0146101d65780638da5cb5b146101aa578063dc8daf9314610185578063df08f57f14610167578063e3064a77146100d75763f3d4b942146100b1575061000f565b346100d357816003193601126100d35760209060ff6003541690519015158152f35b5080fd5b50346100d357806003193601126100d3576004356024359161010760018060a01b0360035460081c163314610406565b82821015610119575060015560025580f35b5162461bcd60e51b815260206004820152602260248201527f5761726e696e67206d757374206265206c657373207468616e20637269746963604482015261185b60f21b6064820152608490fd5b50346100d357816003193601126100d3576020906001549051908152f35b50346100d357816003193601126100d3576020906101a16102f5565b90519015158152f35b50346100d357816003193601126100d357600354905160089190911c6001600160a01b03168152602090f35b50346100d357816003193601126100d3576020906002549051908152f35b50346100d357816003193601126100d357602091549051908152f35b823461024957806003193601126102495760035461023c33600883901c6001600160a01b031614610406565b60ff191660035542815580f35b80fd5b50346100d357816003193601126100d35761026a60209254426102d4565b60015410159051908152f35b82346102495780600319360112610249576003546102a233600883901c6001600160a01b031614610406565b42825560ff191660035580f35b50346100d357816003193601126100d3576102cd60209254426102d4565b9051908152f35b919082039182116102e157565b634e487b7160e01b5f52601160045260245ffd5b6103005f54426102d4565b600254811161037657600154811161034257507fea2e2251644b37295621fec87e47940fc7a1997b2308dcb5d6976f795da0ab426020604051428152a1600190565b60407f36a748cd3c013acf31205bf1166a615417d21121c0963d52ff9510f5e8897978918151904282526020820152a15f90565b5060035460ff811615610389575b505f90565b60019060ff1916176003557fdee43c50e87979bb0bb17aa81151a8ba8f3bd3f8e8d1e77ac38f8c03f03678ec60a060405142815260406020820152602560408201527f53657175656e63657220637269746963616c207468726573686f6c6420657863606082015264195959195960da1b6080820152a15f610384565b1561040d57565b60405162461bcd60e51b815260206004820152600a60248201526927b7363c9037bbb732b960b11b6044820152606490fdfea26469706673582212205b5863cccc08272105b0b60a176683efbc91b4f7501d546c5c7266a01af6d1d264736f6c63430008140033",
+  "deployedBytecode": "0x604060808152600436101561002c575b50361561001a575f80fd5b60ff600354161561002757005b425f55005b5f90813560e01c806303899d06146102af57806355d04aa81461027657806356e00f6b1461024c5780636a28f000146102105780636b27eea1146101f45780637f14c6d0146101d65780638da5cb5b146101aa578063dc8daf9314610185578063df08f57f14610167578063e3064a77146100d75763f3d4b942146100b1575061000f565b346100d357816003193601126100d35760209060ff6003541690519015158152f35b5080fd5b50346100d357806003193601126100d3576004356024359161010760018060a01b0360035460081c163314610406565b82821015610119575060015560025580f35b5162461bcd60e51b815260206004820152602260248201527f5761726e696e67206d757374206265206c657373207468616e20637269746963604482015261185b60f21b6064820152608490fd5b50346100d357816003193601126100d3576020906001549051908152f35b50346100d357816003193601126100d3576020906101a16102f5565b90519015158152f35b50346100d357816003193601126100d357600354905160089190911c6001600160a01b03168152602090f35b50346100d357816003193601126100d3576020906002549051908152f35b50346100d357816003193601126100d357602091549051908152f35b823461024957806003193601126102495760035461023c33600883901c6001600160a01b031614610406565b60ff191660035542815580f35b80fd5b50346100d357816003193601126100d35761026a60209254426102d4565b60015410159051908152f35b82346102495780600319360112610249576003546102a233600883901c6001600160a01b031614610406565b42825560ff191660035580f35b50346100d357816003193601126100d3576102cd60209254426102d4565b9051908152f35b919082039182116102e157565b634e487b7160e01b5f52601160045260245ffd5b6103005f54426102d4565b600254811161037657600154811161034257507fea2e2251644b37295621fec87e47940fc7a1997b2308dcb5d6976f795da0ab426020604051428152a1600190565b60407f36a748cd3c013acf31205bf1166a615417d21121c0963d52ff9510f5e8897978918151904282526020820152a15f90565b5060035460ff811615610389575b505f90565b60019060ff1916176003557fdee43c50e87979bb0bb17aa81151a8ba8f3bd3f8e8d1e77ac38f8c03f03678ec60a060405142815260406020820152602560408201527f53657175656e63657220637269746963616c207468726573686f6c6420657863606082015264195959195960da1b6080820152a15f610384565b1561040d57565b60405162461bcd60e51b815260206004820152600a60248201526927b7363c9037bbb732b960b11b6044820152606490fdfea26469706673582212205b5863cccc08272105b0b60a176683efbc91b4f7501d546c5c7266a01af6d1d264736f6c63430008140033",
+  "linkReferences": {},
+  "deployedLinkReferences": {},
+  "immutableReferences": {},
+  "inputSourceName": "project/contracts/SequencerWatchdog.sol",
+  "buildInfoId": "solc-0_8_20-760a3b658f452617199aae6ab39dfa309e96f599"
+}
